@@ -26,8 +26,8 @@ contract Arbitrageur is
     address public constant DAI_ADDRESS = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
     address public constant BAT_ADDRESS = 0x2d12186Fbb9f9a8C28B3FfdD4c42920f8539D738;
 
-    address public constant UNISWAP_FACTORY_A = 0x54Ac34e5cE84C501165674782582ADce2FDdc8F4;
-    address public constant UNISWAP_FACTORY_B = 0xECc6C0542710a0EF07966D7d1B10fA38bbb86523;
+    address public constant UNISWAP_FACTORY_A = 0xECc6C0542710a0EF07966D7d1B10fA38bbb86523;
+    address public constant UNISWAP_FACTORY_B = 0x54Ac34e5cE84C501165674782582ADce2FDdc8F4;
 
     ILendingPool public lendingPool;
     IUniswapExchange public exchangeA;
