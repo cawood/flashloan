@@ -1,8 +1,8 @@
 pragma solidity ^0.5.0;
 
-import "https://github.com/mrdavey/ez-flashloan/blob/remix/contracts/aave/FlashLoanReceiverBase.sol";
-import "https://github.com/mrdavey/ez-flashloan/blob/remix/contracts/aave/ILendingPool.sol";
-import "https://github.com/Robsonsjre/FlashloanUsecases/blob/master/contracts/interfaces/IUniswap.sol";
+import "./aave/FlashLoanReceiverBase.sol";
+import "./aave/ILendingPool.sol";
+import "./interfaces/IUniswap.sol";
 
 
 //1 DAI = 1000000000000000000 (18 decimals)
@@ -20,108 +20,113 @@ import "https://github.com/Robsonsjre/FlashloanUsecases/blob/master/contracts/in
  * 4. Repay Aave loan
  * 5. Keep the profits
  */
-contract Arbitrageur is
-    FlashLoanReceiverBase(address(0x506B0B2CF20FAA8f38a4E2B524EE43e1f4458Cc5))
-{
-    address public constant DAI_ADDRESS = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
-    address public constant BAT_ADDRESS = 0x2d12186Fbb9f9a8C28B3FfdD4c42920f8539D738;
+ contract Arbitrageur is
+     FlashLoanReceiverBase(address(0x506B0B2CF20FAA8f38a4E2B524EE43e1f4458Cc5))
+ {
+     address public constant DAI_ADDRESS = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
+     address public constant BAT_ADDRESS = 0x2d12186Fbb9f9a8C28B3FfdD4c42920f8539D738;
 
-    address public constant UNISWAP_FACTORY_A = 0xECc6C0542710a0EF07966D7d1B10fA38bbb86523;
-    address public constant UNISWAP_FACTORY_B = 0x54Ac34e5cE84C501165674782582ADce2FDdc8F4;
+     //=> old
+     //address public constant UNISWAP_FACTORY_A = 0xECc6C0542710a0EF07966D7d1B10fA38bbb86523;
+     //address public constant UNISWAP_FACTORY_B = 0x54Ac34e5cE84C501165674782582ADce2FDdc8F4;
 
-    ILendingPool public lendingPool;
-    IUniswapExchange public exchangeA;
-    IUniswapExchange public exchangeB;
-    IUniswapFactory public uniswapFactoryA;
-    IUniswapFactory public uniswapFactoryB;
+     //new
+     address public constant UNISWAP_FACTORY_A = 0x54Ac34e5cE84C501165674782582ADce2FDdc8F4;
+     address public constant UNISWAP_FACTORY_B = 0xECc6C0542710a0EF07966D7d1B10fA38bbb86523;
 
-    constructor() public {
-        // Instantiate Uniswap Factory A
-        uniswapFactoryA = IUniswapFactory(UNISWAP_FACTORY_A);
-        // get Exchange A Address
-        address exchangeA_address = uniswapFactoryA.getExchange(DAI_ADDRESS);
-        // Instantiate Exchange A
-        exchangeA = IUniswapExchange(exchangeA_address);
+     ILendingPool public lendingPool;
+     IUniswapExchange public exchangeA;
+     IUniswapExchange public exchangeB;
+     IUniswapFactory public uniswapFactoryA;
+     IUniswapFactory public uniswapFactoryB;
 
-        //Instantiate Uniswap Factory B
-        uniswapFactoryB = IUniswapFactory(UNISWAP_FACTORY_B);
-        // get Exchange B Address
-        address exchangeB_address = uniswapFactoryB.getExchange(BAT_ADDRESS);
-        //Instantiate Exchange B
-        exchangeB = IUniswapExchange(exchangeB_address);
-        // get lendingPoolAddress
-        address lendingPoolAddress = addressesProvider.getLendingPool();
-        //Instantiate Aaave Lending Pool B
-        lendingPool = ILendingPool(lendingPoolAddress);
-    }
+     constructor() public {
+         // Instantiate Uniswap Factory A
+         uniswapFactoryA = IUniswapFactory(UNISWAP_FACTORY_A);
+         // get Exchange A Address
+         address exchangeA_address = uniswapFactoryA.getExchange(DAI_ADDRESS);
+         // Instantiate Exchange A
+         exchangeA = IUniswapExchange(exchangeA_address);
 
-    /*
-     * Start the arbitrage
-     */
-    function makeArbitrage(uint256 amount) public onlyOwner {
-        bytes memory data = "";
+         //Instantiate Uniswap Factory B
+         uniswapFactoryB = IUniswapFactory(UNISWAP_FACTORY_B);
+         // get Exchange B Address
+         address exchangeB_address = uniswapFactoryB.getExchange(BAT_ADDRESS);
+         //Instantiate Exchange B
+         exchangeB = IUniswapExchange(exchangeB_address);
+         // get lendingPoolAddress
+         address lendingPoolAddress = addressesProvider.getLendingPool();
+         //Instantiate Aaave Lending Pool B
+         lendingPool = ILendingPool(lendingPoolAddress);
+     }
 
-        ERC20 dai = ERC20(DAI_ADDRESS);
-        lendingPool.flashLoan(address(this), DAI_ADDRESS, amount, data);
+     /*
+      * Start the arbitrage
+      */
+     function makeArbitrage(uint256 amount) public onlyOwner {
+         bytes memory data = "";
 
-        // Any left amount of DAI is considered profit
-        uint256 profit = dai.balanceOf(address(this));
-        // Sending back the profits
-        require(
-            dai.transfer(msg.sender, profit),
-            "Could not transfer back the profit"
-        );
-    }
+         ERC20 dai = ERC20(DAI_ADDRESS);
+         lendingPool.flashLoan(address(this), DAI_ADDRESS, amount, data);
 
-    function executeOperation(
-        address _reserve,
-        uint256 _amount,
-        uint256 _fee,
-        bytes calldata _params
-    ) external {
-        // If transactions are not mined until deadline the transaction is reverted
-        uint256 deadline = getDeadline();
+         // Any left amount of DAI is considered profit
+         uint256 profit = dai.balanceOf(address(this));
+         // Sending back the profits
+         require(
+             dai.transfer(msg.sender, profit),
+             "Could not transfer back the profit"
+         );
+     }
 
-        ERC20 dai = ERC20(DAI_ADDRESS);
-        ERC20 bat = ERC20(BAT_ADDRESS);
+     function executeOperation(
+         address _reserve,
+         uint256 _amount,
+         uint256 _fee,
+         bytes calldata _params
+     ) external {
+         // If transactions are not mined until deadline the transaction is reverted
+         uint256 deadline = getDeadline();
 
-        // Buying ETH at Exchange A
-        require(
-            dai.approve(address(exchangeA), _amount),
-            "Could not approve DAI sell"
-        );
+         ERC20 dai = ERC20(DAI_ADDRESS);
+         ERC20 bat = ERC20(BAT_ADDRESS);
 
-        uint256 tokenBought = exchangeA.tokenToTokenSwapInput(
-            _amount,
-            1,
-            1,
-            deadline,
-            BAT_ADDRESS
-        );
+         // Buying ETH at Exchange A
+         require(
+             dai.approve(address(exchangeA), _amount),
+             "Could not approve DAI sell"
+         );
 
-        require(
-            bat.approve(address(exchangeB), tokenBought),
-            "Could not approve DAI sell"
-        );
+         uint256 tokenBought = exchangeA.tokenToTokenSwapInput(
+             _amount,
+             1,
+             1,
+             deadline,
+             BAT_ADDRESS
+         );
 
-        // Selling ETH at Exchange B
-        uint256 daiBought = exchangeB.tokenToTokenSwapInput(
-            tokenBought,
-            1,
-            1,
-            deadline,
-            DAI_ADDRESS
-        );
+         require(
+             bat.approve(address(exchangeB), tokenBought),
+             "Could not approve DAI sell"
+         );
 
-        // Repay loan
-        uint256 totalDebt = _amount.add(_fee);
+         // Selling ETH at Exchange B
+         uint256 daiBought = exchangeB.tokenToTokenSwapInput(
+             tokenBought,
+             1,
+             1,
+             deadline,
+             DAI_ADDRESS
+         );
 
-        require(daiBought > totalDebt, "Did not profit");
+         // Repay loan
+         uint256 totalDebt = _amount.add(_fee);
 
-        transferFundsBackToPoolInternal(_reserve, totalDebt);
-    }
+         require(daiBought > totalDebt, "Did not profit");
 
-    function getDeadline() internal view returns (uint256) {
-        return now + 3000;
-    }
-}
+         transferFundsBackToPoolInternal(_reserve, totalDebt);
+     }
+
+     function getDeadline() internal view returns (uint256) {
+         return now + 3000;
+     }
+ }
