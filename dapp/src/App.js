@@ -14,18 +14,6 @@ async function initBlockchain() {
     gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
 });
 
-/*  ethereum.enable().then((accounts)=>{
-        contractInstance = new web3.eth.Contract(abi, "0x718Aba5BB6C93C96eAdAdCea6E9C58a6B0d400Dc", {from: accounts[0]});
-          //console.log("contract Instance", contractInstance  );
-                playerAddress = web3.currentProvider.selectedAddress;
-                $("#head_button").click(()=>{placeBet(HEAD)});
-                $("#tail_button").click(()=>{placeBet(TAIL)});
-                $("#fund_button").click(fundContractValue);
-                $("#payout_button").click(payoutPlayer);
-                hideEllipsis();
-                getContractBalance();
-                getPlayerBalance();
-        });*/
 }
 
 
