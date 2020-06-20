@@ -105,3 +105,5 @@ dist
 
 # Truffle contract build files
 build/contracts
+
+.DS_Store
