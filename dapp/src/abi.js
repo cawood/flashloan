@@ -178,12 +178,17 @@ const abi = [
     "constant": false,
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "newamount",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
-        "name": "_asset",
+        "name": "_token",
         "type": "address"
       }
     ],
-    "name": "flashloan",
+    "name": "flashLoan",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
