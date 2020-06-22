@@ -324,7 +324,4 @@ const arbitrageur = [
   }
 ];
 
-export default new web3.eth.Contract(arbitrageur, address, {
-  from: '0x44D00123d264Ba3Fb253563B6Fe34c142618d77A',
-   //gasPrice: '48534000000'
-});
+export default new web3.eth.Contract(arbitrageur, address);

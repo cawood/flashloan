@@ -36,11 +36,14 @@ async function initBlockchain() {
 
 
 const onClick = async () => {
-  /*testContract.methods.testCall().call().then((r) =>{
-    console.log("r: ", r);
-  }).catch((e)=>{console.error(e)});*/
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:8545" );
+  const accounts = await web3.eth.getAccounts();
 
-  arbitrageur.methods.makeArbitrage("1000000000000000000").send().then((r)=>{
+  console.log("accounts: ", accounts);
+
+  arbitrageur.methods.makeArbitrage("1000000000000000000").send({
+    from: accounts[0]
+     }).then((r)=>{
     console.log("r2: ", r);
   })
 };
