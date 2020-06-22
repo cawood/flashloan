@@ -1,9 +1,9 @@
 //import web3 from './web3';
 import Web3 from 'web3';
 const web3 = new Web3(window.web3.currentProvider);
-const address = '0x0EE6480a342d95936d60f7037a73D65f69794656';
+const address = '0x29134E073A0a18F2260bD46D8647cd2fa2cFfF8F';
 
-const abi2 = [
+const testContract = [
   {
     "constant": true,
     "inputs": [],
@@ -21,4 +21,4 @@ const abi2 = [
   }
 ];
 
-export default new web3.eth.Contract(abi2, address);
+export default new web3.eth.Contract(testContract, address);
