@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 const web3 = new Web3(window.web3.currentProvider);
-const address = '0x8aB31289A678B4067Ed9b4512C0D26D66c71526B';
+const address = '0xE666c72350472627f18B625Ae4ea666295941857';
 
 const arbitrageur = [
   {

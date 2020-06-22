@@ -2,7 +2,7 @@ import React from 'react';
 import Web3 from 'web3';
 import testContract from "./abi/testContract";
 import arbitrageur from "./abi/arbitrageur";
-import { Box, Button, Avatar , Heading, Text } from "rimble-ui";
+import { Box, Button, Avatar , Field,  Input , Heading, Text } from "rimble-ui";
 
 const onClick = async () => {
   const web3 = new Web3(Web3.givenProvider || "http://localhost:8545" );
@@ -23,36 +23,43 @@ function App() {
     <div className="container">
       <div className="row">
          <div className="col-sm">
-           One of three columns
+           From:
          </div>
          <div className="col-sm">
-         <Avatar src="https://airswap-token-images.s3.amazonaws.com/ETH.png" />
+          <Avatar size="70px" src="https://airswap-token-images.s3.amazonaws.com/ETH.png" />
          </div>
          <div className="col-sm">
-
+          <Field label="Amount">
+            <Input type="number" required={true} placeholder="e.g. 10000000000000" />
+          </Field>
          </div>
        </div>
        <div className="row">
           <div className="col-sm">
-             One of three columns
+             To:
           </div>
           <div className="col-sm">
-            <Avatar src="https://airswap-token-images.s3.amazonaws.com/DAI.png" />
+            <Avatar size="70px" src="https://airswap-token-images.s3.amazonaws.com/DAI.png" />
           </div>
           <div className="col-sm">
-          
+            <Field label="Amount">
+              <Input type="number" required={true} placeholder="e.g. 10000000000000" />
+            </Field>
            </div>
         </div>
         <div className="row">
-           <div className="col-sm">
-              One of three columns
-           </div>
-           <div className="col-sm">
-            <button onClick={onClick}> Test Arb</button>
-           </div>
-           <div className="col-sm">
+        <div className="col-sm">
 
-            </div>
+        </div>
+           <div className="col-sm">
+             <Button size="medium" mr={3} onClick={onClick}>
+                Go
+             </Button>
+           </div>
+           <div className="col-sm">
+            
+           </div>
+
          </div>
     </div>
   );
