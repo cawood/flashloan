@@ -2,6 +2,7 @@ import React from 'react';
 import Web3 from 'web3';
 import testContract from "./abi/testContract";
 import arbitrageur from "./abi/arbitrageur";
+import { Box, Button, Avatar , Heading, Text } from "rimble-ui";
 
 const onClick = async () => {
   const web3 = new Web3(Web3.givenProvider || "http://localhost:8545" );
@@ -20,8 +21,39 @@ function App() {
 
   return (
     <div className="container">
-        <h1>Hello World!</h1>
-          <button onClick={onClick}> Test</button>
+      <div className="row">
+         <div className="col-sm">
+           One of three columns
+         </div>
+         <div className="col-sm">
+         <Avatar src="https://airswap-token-images.s3.amazonaws.com/ETH.png" />
+         </div>
+         <div className="col-sm">
+
+         </div>
+       </div>
+       <div className="row">
+          <div className="col-sm">
+             One of three columns
+          </div>
+          <div className="col-sm">
+            <Avatar src="https://airswap-token-images.s3.amazonaws.com/DAI.png" />
+          </div>
+          <div className="col-sm">
+          
+           </div>
+        </div>
+        <div className="row">
+           <div className="col-sm">
+              One of three columns
+           </div>
+           <div className="col-sm">
+            <button onClick={onClick}> Test Arb</button>
+           </div>
+           <div className="col-sm">
+
+            </div>
+         </div>
     </div>
   );
 }
