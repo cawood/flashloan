@@ -63,7 +63,7 @@ import "./interfaces/IUniswap.sol";
      /*
       * Start the arbitrage
       */
-     function makeArbitrage(uint256 amount) public onlyOwner {
+     function makeArbitrage(uint256 amount) public {
          bytes memory data = "";
 
          ERC20 dai = ERC20(DAI_ADDRESS);

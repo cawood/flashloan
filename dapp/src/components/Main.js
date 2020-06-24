@@ -1,28 +1,35 @@
-import React, {useState} from 'react';
+import React, {useState} from "react";
 import Web3 from 'web3';
-import testContract from "./abi/testContract";
-import arbitrageur from "./abi/arbitrageur";
-import { Box, Button, Avatar , Field,  Table, Input , Loader, Heading, Text } from "rimble-ui";
-var i;
-const setDataInput2 = (e) =>  e;
+import testContract from "../abi/testContract";
+import arbitrageur from "../abi/arbitrageur";
+import {Avatar, Button, Field, Input} from "rimble-ui";
+
 
 const onClick = async () => {
   const web3 = new Web3(Web3.givenProvider || "http://localhost:8545" );
   const accounts = await web3.eth.getAccounts();
-  console.log("input2: ", i);
-  arbitrageur.methods.makeArbitrage(i).send({
+
+  arbitrageur.methods.makeArbitrage("1000000000000000000").send({
     from: accounts[0]
      }).then((r)=>{
     console.log("r: ", r);
   }).catch(e => console.error(e));
 };
 
-function  App() {
+const onClick2 = async () => {
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:8545" );
+  const accounts = await web3.eth.getAccounts();
+
+  testContract.methods.testCall().call().then((r)=>{
+    console.log("r: ", r);
+  }).catch(e => console.error(e));
+};
+
+
+function Main() {
+
   const [input2, setInput2] = useState('');
-  i = input2;
-  return (
-    <div className="container">
-    <Heading as={"h1"}>Flashloan arbitrage {input2}</Heading>
+    return (<div>
       <div className="row">
          <div className="col-sm">
            From:
@@ -51,7 +58,7 @@ function  App() {
         </div>
          <div className="row">
            <div className="col-sm">
-             <Button icon="Send" mr={3}>
+             <Button icon="Send" mr={3} onClick={onClick2}>
                Send
            </Button>
            </div>
@@ -61,15 +68,10 @@ function  App() {
               </Button>
             </div>
             <div className="col-sm">
-             <Button>
-               <Loader color="white" />
-             </Button>
+
             </div>
           </div>
-
-
-    </div>
-  );
+        </div>)
 }
 
-export default App;
+export default Main;

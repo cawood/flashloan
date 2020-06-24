@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.css';
-import './index.css';
+//import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { createGlobalStyle } from 'styled-components'
+
+const ThemedGlobalStyle = createGlobalStyle`
+html {
+
+  background-color: #999;
+}
+`
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemedGlobalStyle />
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );
