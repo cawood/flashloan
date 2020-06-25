@@ -11,7 +11,7 @@ import "./EthAddressLib.sol";
 import "../utils/Withdrawable.sol";
 
 contract FlashLoanReceiverBase is IFlashLoanReceiver, Withdrawable {
-  using SafeERC20 for IERC20;
+     using SafeERC20 for IERC20;
      using SafeMath for uint256;
 
      ILendingPoolAddressesProvider public addressesProvider;
