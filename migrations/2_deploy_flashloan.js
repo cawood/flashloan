@@ -1,7 +1,6 @@
 let Flashloan = artifacts.require("Flashloan")
 let defaultAccount = '0x44D00123d264Ba3Fb253563B6Fe34c142618d77A';
 
-
 module.exports = async function (deployer, network, accounts) {
     try {
 
