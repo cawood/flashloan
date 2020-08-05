@@ -106,4 +106,6 @@ dist
 # Truffle contract build files
 build/contracts
 
+truffle-config.js
+
 .DS_Store
